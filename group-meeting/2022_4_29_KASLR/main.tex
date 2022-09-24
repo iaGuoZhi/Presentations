@@ -68,7 +68,9 @@ microVM很关注启动速度，因此microVM通常省略bootstrap步骤，直接
   \frametitle{Booting a microVM}
   \framesubtitle{kernel直接启动}
 
-  Modern的VM monitors(Fire-cracker, Cloud Hypervisor, QEMU)都支持跳过bootstrap直接启动一个未被压缩的kernel，而不是bzImage。因此直接启动vm的kernel将不能够给vm实现KASLR。
+  Modern的VM monitors(Fire-cracker, Cloud Hypervisor, QEMU)都支持跳过bootstrap直接启动一个未被压缩的kernel，而不是bzImage。
+
+直接启动vm的kernel将不能够给vm实现KASLR。
 \end{frame}
 
 \begin{frame}
@@ -165,7 +167,7 @@ microVM很关注启动速度，因此microVM通常省略bootstrap步骤，直接
 \begin{block}{实验4}
   优化bootloader后的启动时间
 \end{block}
-  none-optimized依旧比uncompressed要慢，作者认为bootloader中实现KASLR是不可行的。于是引入了他们的设计in-monitor KASLR。
+  none-optimized依旧比uncompressed要慢许多，因此作者认为bootloader中实现KASLR是不可行的。于是引入了他们的设计in-monitor KASLR。
 \end{frame}
 
 \begin{frame}
@@ -270,17 +272,17 @@ in-monitor KASLR 相对于之前提到过的修改过的bootloader实现KASLR的
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{itemize}
-  \item FGKASLR现在的应用情况: 在Linux 5.11版本上被研究者提出, 但是还没有合并进入主线。
-  \item 这个工作基于的FireCracker基于的版本是0.26，说明这篇工作差不多是去年eurosys前两个月做的。
-  \item ORC stack uninwder table 是什么: Fixing the bug requires that developers understand the state of your machine at the time of the crash. One of the most critical clues for debugging is the stacktrace, produced by the kernel’s stack unwinder. But the kernel’s unwinders are not reliable 100\% all of the time. The x86 ORC unwinder patch series, posted to the Linux kernel mailing list by Josh Poimboeuf, aims to change that.
-  \item relocs的作用
-  \item direct boot 为什么不需要relocation? 可能qemu已经做过了，但是如果qemu帮助做relocation，帮助实现KASLR不是顺理成章的事情吗？那这篇论文的贡献在哪里？ direct boot是不做relocation
-  \item none-optimized和in-monitor的性能比较
-  \item 如果不做KASLR还需要relocation吗 应该是不需要的，因为要做relocation就需要有relocs，但是按照论文的意思是relocs是他们新增加的，之前firecracker并不会读relocs文件
-\end{itemize}
-\end{frame}
+%\begin{frame}
+%\begin{itemize}
+%  \item FGKASLR现在的应用情况: 在Linux 5.11版本上被研究者提出, 但是还没有合并进入主线。
+%  \item 这个工作基于的FireCracker基于的版本是0.26，说明这篇工作差不多是去年eurosys前两个月做的。
+%  \item ORC stack uninwder table 是什么: Fixing the bug requires that developers understand the state of your machine at the time of the crash. One of the most critical clues for debugging is the stacktrace, produced by the kernel’s stack unwinder. But the kernel’s unwinders are not reliable 100\% all of the time. The x86 ORC unwinder patch series, posted to the Linux kernel mailing list by Josh Poimboeuf, aims to change that.
+%  \item relocs的作用
+%  \item direct boot 为什么不需要relocation? 可能qemu已经做过了，但是如果qemu帮助做relocation，帮助实现KASLR不是顺理成章的事情吗？那这篇论文的贡献在哪里？ direct boot是不做relocation
+%  \item none-optimized和in-monitor的性能比较
+%  \item 如果不做KASLR还需要relocation吗 应该是不需要的，因为要做relocation就需要有relocs，但是按照论文的意思是relocs是他们新增加的，之前firecracker并不会读relocs文件
+%\end{itemize}
+%\end{frame}
 
 \makebottom       % 创建结束页
 

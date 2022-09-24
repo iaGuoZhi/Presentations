@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2022.4.17)  28 APR 2022 20:48
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2022.4.17)  6 MAY 2022 08:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1630,12 +1630,12 @@ Missing character: There is no 8 ("38) in font nullfont!
 [7
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 83.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 85.
 
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 83.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 85.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1717,7 +1717,7 @@ File: img/lupin_eval.png Graphic file (type bmp)
 File: img/aws_eval.png Graphic file (type bmp)
 <img/aws_eval.png>
 
-Overfull \vbox (0.66891pt too high) detected at line 231
+Overfull \vbox (0.66891pt too high) detected at line 233
  []
 
 [25
@@ -1766,10 +1766,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44295 strings out of 476180
- 991607 string characters out of 5815297
- 1888557 words of memory out of 5000000
- 64228 multiletter control sequences out of 15000+600000
+ 44297 strings out of 476180
+ 991623 string characters out of 5815297
+ 1888612 words of memory out of 5000000
+ 64230 multiletter control sequences out of 15000+600000
  476141 words of font info for 78 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  142i,15n,141p,931b,893s stack positions out of 5000i,500n,10000p,200000b,80000s
