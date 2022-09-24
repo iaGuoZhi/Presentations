@@ -1,0 +1,13 @@
+# Fdb version 3
+["pdflatex"] 1658562715 "main.tex" "build/main.pdf" "main" 1658562715
+  "/etc/texmf/web2c/texmf.cnf" 1516619203 1101 af7716885e081ab43982cab7b4672c1a ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1503343927 31343 93828589fb0cea665e553ee5a17ad2d4 ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1503343927 31343 93828589fb0cea665e553ee5a17ad2d4 ""
+  "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1516619671 3473326 756f6674873e738a131cf9bd680e2aa1 ""
+  "build/ctexbeamer.cls" 0 -1 0 ""
+  "build/main.aux" 1658562577 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "ctexbeamer.cls" 0 -1 0 ""
+  "main.tex" 1658562577 11110 5f3d1475b56a75d10ea34dcbf346eff5 ""
+  (generated)
+  "build/main.log"
+  "build/main.pdf"

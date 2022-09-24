@@ -1,0 +1,616 @@
+% \iffalse meta-comment --------------------------------------------------
+% Copyright (C) 2021,2022 SJTUG
+%
+% Licensed under the Apache License, Version 2.0 (the "License");
+% you may not use this file except in compliance with the License.
+% You may obtain a copy of the License at
+%
+%     http://www.apache.org/licenses/LICENSE-2.0
+%
+% Unless required by applicable law or agreed to in writing, software 
+% distributed under the License is distributed on an "AS IS" BASIS,
+% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+% See the License for the specific language governing permissions and
+% limitations under the License.
+% ------------------------------------------------------------------------ \fi
+% \iffalse
+%<*package>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemesjtubeamer}[2022/04/21 v2.6.1 sjtubeamer inner theme]
+%</package>
+% \fi
+% \CheckSum{0}
+% \StopEventually{}
+% \iffalse
+%<*package>
+% ------------------------------------------------------------------- \fi
+%
+%
+% \subsection{Inner Theme}
+%
+%
+% A |beamer| inner theme dictates the style of the frame elements traditionally
+% set in the ``body'' of each slide. These include:
+%
+% \begin{itemize}
+%   \item title, part, and section pages;
+%   \item itemize, enumerate, and description environments;
+%   \item block environments including theorems and proofs;
+%   \item figures and tables; and
+%   \item footnotes and plain text.
+% \end{itemize}
+%
+%  \subsubsection{Load Packages}
+%   Load SJTU VI Library to get the definition on color and shape.
+%    \begin{macrocode}
+\RequirePackage{sjtuvi}
+%    \end{macrocode}
+%   Load tcolorbox for creating delicate boxes.
+%    \begin{macrocode}
+\RequirePackage{tcolorbox}
+%    \end{macrocode}
+%
+%   \subsubsection{Option Declaration}
+%  \begin{macro}{\sjtubeamer@inner@cover}
+%    \begin{macrocode}
+%<*maxplus>
+\DefineOption{inner}{cover}{maxplus}
+%</maxplus>
+%<*max>
+\DefineOption{inner}{cover}{max}
+%</max>
+%<*min>
+\DefineOption{inner}{cover}{min}
+%</min>
+%<*my>
+\DefineOption{inner}{cover}{my} % reserved for customization
+%</my>
+\ExecuteOptionsBeamer{
+%<*maxplus>
+  maxplus,
+%</maxplus>
+%<*min>
+  min,
+%</min>
+%<*my>
+  my,
+%</my>    
+%<*max>
+  max,
+%</max>
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\sjtubeamer@inner@lang}
+%    \begin{macrocode}
+\DeclareOptionBeamer{zh}{\def\sjtubeamer@inner@lang{zh}}
+\DeclareOptionBeamer{en}{\def\sjtubeamer@inner@lang{en}}
+\@ifclassloaded{ctexbeamer}{\ExecuteOptionsBeamer{zh}}{
+  \ExecuteOptionsBeamer{en}}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\sjtubeamer@inner@color}
+%    \begin{macrocode}
+\DefineOption{inner}{color}{red}
+\DefineOption{inner}{color}{blue}
+\ExecuteOptionsBeamer{red}
+%    \end{macrocode}
+%  \end{macro}
+%
+%    \begin{macrocode}
+\ProcessOptionsBeamer
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\PassOptionsToPackage{\sjtubeamer@inner@lang}{sjtucover}
+%    \end{macrocode}
+%
+%   Hard-coded color for blocks. A replica of color theme.
+%    \begin{macrocode}
+\if\EqualOption{inner}{color}{red}
+  \colorlet{cprimary}{sjtuRedPrimary}
+  \colorlet{csecondary}{sjtuRedSecondary}
+  \colorlet{ctertiary}{sjtuRedTertiary}
+  \colorlet{cquanternary}{black}
+\else
+  \colorlet{cprimary}{sjtuBluePrimary}
+  \colorlet{csecondary}{sjtuBlueSecondary}
+  \colorlet{ctertiary}{sjtuBlueTertiary}
+  \colorlet{cquanternary}{white}
+\fi
+%    \end{macrocode}
+%
+%   \subsubsection{Load Packages}\label{sec:innerload}
+%
+%   Introduce the library from tcolorbox to make code blocks.
+%   \verb"listingsutf8" is used to receive UTF-8 input. 
+%   The global set on shield externalize will prevent tcolorbox from externalizing. 
+%    \begin{macrocode}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+\tcbuselibrary{listingsutf8}
+\tcbset{shield externalize}
+%    \end{macrocode}
+%
+%   Load Cover Library to get the customized cover.
+%    \begin{macrocode}
+\RequirePackage{sjtucover}
+%    \end{macrocode}
+%
+%   \subsubsection{Logo \& Title Graphic}
+%
+%   Set up logo for this cover.
+%    \begin{macrocode}
+\setbeamertemplate{logo}[\sjtubeamer@inner@cover]
+%    \end{macrocode}
+%
+%  \begin{macro}{\bgcenterbox}
+%   Define a command to make a centered background box easily.
+%    \begin{macrocode}
+\newcommand{\bgcenterbox}[1]{
+  \parbox[c][1.1\paperheight][c]{\paperwidth}{
+    \centering\resizebox{\paperwidth}{!}{#1}
+  }
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%   max theme has the background.
+%   \verb"\setbeamertemplate{background}{}" after loading the theme will disable it.
+%    \begin{macrocode}
+\if\EqualOption{inner}{cover}{max}
+  \setbeamertemplate{background}
+    {\bgcenterbox{\sjtubg[cprimary!50,opacity=0.2]}}
+\fi
+%    \end{macrocode}
+%
+%   Redefine the \verb"\titlegraphic" command in \verb"beamer" to implement it into the beamer template management system, as is been done in \verb"\logo".
+%   The original definition of \verb"\titlegraphic" is to set the command \verb"\inserttitlegraphic" as its parameter directly.
+%    \begin{macrocode}
+\def\titlegraphic{\setbeamertemplate{titlegraphic}}
+%    \end{macrocode}
+%   Redefine the \verb"\inserttitlegraphic" command to use the template \verb"titlegraphic" directly, using the current color setup without forming a group (not \verb"\usebeamertemplate*").
+%    \begin{macrocode}
+\def\inserttitlegraphic{\usebeamertemplate{titlegraphic}}
+%    \end{macrocode}
+%
+%   Set up titlegraphic for this cover.
+%   First set to empty in case that all definitions of this template in \verb"sjtucover" is not extracted.
+%    \begin{macrocode}
+\setbeamertemplate{titlegraphic}{}
+\setbeamertemplate{titlegraphic}[\sjtubeamer@inner@cover]
+%    \end{macrocode}
+%
+% \subsubsection{Covers}
+%  This part set up title page, section page, part page, section page and subsection page for this cover based on the library \verb"sjtucover" loaded in section \ref{sec:innerload}.
+%
+%  Initialize sidebar width to 0pt as no sidebar required, which will be overwritten in outer theme.
+%    \begin{macrocode}
+\newdimen\beamer@sidebarwidth
+\beamer@sidebarwidth=0pt
+%    \end{macrocode}
+%
+%  \begin{macro}{\coverpage}
+%  Common command for \verb"\titlepage" and \verb"\bottompage", and more.
+%    \begin{macrocode}
+\def\coverpage#1{
+  {
+%    \end{macrocode}
+%  Disable externalization for generating title page and bottom page, locally.
+%    \begin{macrocode}
+    \tikzset{external/export=false}
+%    \end{macrocode}
+%  Set the \verb"parindent" to 0pt to avoid unwanted shift if indent is set.
+%    \begin{macrocode}
+    \setlength{\parindent}{0em}
+%    \end{macrocode}
+%   Check if it is in sidebar mode to make necessary shift for cover pages.
+%    \begin{macrocode}
+    \ifdim\beamer@sidebarwidth=0pt %
+      \usebeamertemplate*{#1}
+    \else
+      \hspace*{-0.5\beamer@sidebarwidth}\parbox[t]{\textwidth}{
+        \usebeamertemplate*{#1}
+      }
+    \fi
+  }
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+% \begin{macro}{\definecover}
+%  Command generator for \verb"\maketitle" and \verb"\makebottom". Redefinition on \verb"\beamer@writeslideentrty" locally will remove the corresponding navigation dot for miniframe outer theme.
+%  This command receives one parameter for the cover type like ``title'' or ``bottom''.
+%    \begin{macrocode}
+\def\definecover#1{
+%    \end{macrocode}
+%  This command will also generate an auxilary interface like \verb"\titlepage" or \verb"\bottompage", which mainly for overriding the default definition on those macros.
+%    \begin{macrocode}
+  \expandafter\def\csname #1page\endcsname{
+    \coverpage{#1 page}
+  }
+  \expandafter\def\csname make#1\endcsname{
+    {
+      \def\beamer@writeslidentry{\clearpage\beamer@notesactions}
+      \ifbeamer@inframe\csname #1page\endcsname\else
+        \begin{frame}[plain]
+          \csname #1page\endcsname
+        \end{frame}\fi
+    }
+  }
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%   Set up commmand for title page and bottom page.
+%    \begin{macrocode}
+\definecover{title}
+\definecover{bottom}
+%    \end{macrocode}
+%
+%   Initialize the title page and bottom page.
+%    \begin{macrocode}
+\setbeamertemplate{title page}[\sjtubeamer@inner@cover]
+\setbeamertemplate{bottom page}[\sjtubeamer@inner@cover]
+%    \end{macrocode}
+%
+%   Set up commmand for part page, section page and subsection page.
+%    \begin{macrocode}
+\definecover{part}
+\definecover{section}
+\definecover{subsection}
+%    \end{macrocode}
+%
+%  Initialize the sectioning pages. User could redefine the beamer template \verb"sectioning pages" to set up \verb"part page", \verb"section page", \verb"subsection page" in one line. User could also define them seperately as the commented code.
+%  NOTICE: no space around the comma in the children list. No par in the children list.
+%    \begin{macrocode}
+\defbeamertemplateparent{sectioning pages}{part page,section page,subsection page}{}
+\setbeamertemplate{sectioning pages}[\sjtubeamer@inner@cover]
+ % \setbeamertemplate{part page}[\sjtubeamer@inner@cover]
+ % \setbeamertemplate{section page}[\sjtubeamer@inner@cover]
+ % \setbeamertemplate{subsection page}[\sjtubeamer@inner@cover]
+%    \end{macrocode}
+%
+%  Make a part page for each part by default. 
+%  For section and subsection page, we recommend to use the corresponding \verb"\sectionpage" and \verb"\subsectionpage" manually in the main file to be compatible with the syntax of beamer.
+%    \begin{macrocode}
+\AtBeginPart{
+  \makepart
+}
+%    \end{macrocode}
+%
+% \subsubsection{Itemize Environments}
+%
+%   Set the item marker to circle and set the marker for section and subsection in TOC (Table of Contents) to circle.
+%    \begin{macrocode}
+\useinnertheme{circles}
+%    \end{macrocode}
+%
+% \begin{macro}{bibliolist}
+%    Create a bibliography list manually with \verb"\item" patched for \verb"\newblock". 
+%    You can just use \verb"\item" without \verb"\newblock" command, or you could use \verb"\newblock" with \verb"\articleitem", \verb"\bookitem", \verb"\onlineitem".
+%    The mandantory parameter (usually \verb"00") indicates the widest label among items, if you want to indicate the item label seperately.
+%    \begin{macrocode}
+\newenvironment{bibliolist}[1]{
+%    \end{macrocode}
+%    This environment will make use of the native \verb"thebibliography" environment redefined by \verb"beamer".
+%    \begin{macrocode}
+  \begin{thebibliography}{#1}
+%    \end{macrocode}
+%     Save the old definition for \verb"\item".
+%    \begin{macrocode}
+    \let\olditem\item%
+%    \end{macrocode}
+%    Now define the item with new definition of \verb"\newblock" without interrupting the scan of next char for \verb"\item". Now, you could use \verb"\newblock" normally after \verb"\item" command with the initialized \verb"\newblock" state.
+%    This will not interrupt the definition of \verb"\bibitem" since the same definition on \verb"\newblock" has been made --- just define the same thing twice. Notice that the patch is NOT available for the regular \verb"thebibliography" command for compatibility reasons with other themes.
+%    \begin{macrocode}
+    \def\item{\def\newblock{\beamer@newblock}\olditem}
+%    \end{macrocode}
+%    User should insert items by \verb"\articleitem", \verb"\bookitem", \verb"\onlineitem" inside THIS environment, otherwise, the user should insert \verb"\newblock" after \verb"\item" manually, which breaks the use of \verb"\newblock" and not recommended. Or not to use \verb"\newblock" for \verb"\item" at all for migration from \textsc{SJTUThesis} with the same style.
+%    The commands like \verb"\articleitem" do not accept the optional parameter for a label since the first part of this command name has already indicates the label of this item. The command like \verb"\item" accepts the optional parameter for the label and will override the numeric numbering for this item without a bracket surrounding. The behavior is the same as \textsc{SJTUThesis}.
+%    The direct patch on \verb"\item" is hard since \verb"\bibitem" also depends on this command. As a matter of fact, the \verb"\item" itself cannot be cited and should not be numbered by the way otherwise user should use \verb"\bibitem" inside \verb"\thebibliography" environment directly.
+%    Set the beamer template of \verb"bibliography item" to \verb"text" locally to use the label of every item instead of the default icon outside the environment. This will also make the default behavior to make a bracket enumerate list.
+%    \begin{macrocode}
+    \setbeamertemplate{bibliography item}[text]
+}{
+  \end{thebibliography}
+}
+%    \end{macrocode}
+%    This environment syncs with \textsc{SJTUThesis}. It is used to generate the customized look of bibliography list without the processing from \textsc{Bib}\TeX{} or \verb"biblatex", which could bring performance improvement.
+%    You can specify the style of the icon by \verb"\setbeamertemplate{bibliography item}[book]" or other predefined template provided by \verb"beamer" class like \verb"online", \verb"triangle", \verb"text" (for square bracket enumeration).
+%    And such the setting should be done INSIDE the environment and \verb"thebibliography" since \verb"beamer" will override the user setting on this template to text style at the begining of \verb"document" environment if it loads \verb"biblatex".
+% \end{macro}
+%
+%  \begin{macro}{\articleitem}
+%    Start a bibliography item with an article icon, it is recommended to use inside \verb"bibliolist" environment (or it will not be functional if the beamer template of \verb"bibliography item" is not \verb"text").
+%    Remember the \verb"\newblock" will be created after this item so you should use \verb"\newblock" to split different categories in the order of author, title, location and notes.
+%    \begin{macrocode}
+\newcommand{\articleitem}{%
+  \item[{\setbeamertemplate{bibliography item}[article]\usebeamertemplate{bibliography item}}]%
+  \def\newblock{\beamer@newblock}\newblock%
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\bookitem}
+%    Start a bibliography item with an book icon, it is recommended to use inside \verb"bibliolist" environment (or it will not be functional if the beamer template of \verb"bibliography item" is not \verb"text").
+%    Remember the \verb"\newblock" will be created after this item so you should use \verb"\newblock" to split different categories in the order of author, title, location and notes.
+%    \begin{macrocode}
+\newcommand{\bookitem}{%
+  \item[{\setbeamertemplate{bibliography item}[book]\usebeamertemplate{bibliography item}}]%
+  \def\newblock{\beamer@newblock}\newblock%
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\onlineitem}
+%    Start a bibliography item with an online icon, it is recommended to use inside \verb"bibliolist" environment (or it will not be functional if the beamer template of \verb"bibliography item" is not \verb"text"). 
+%    Remember the \verb"\newblock" will be created after this item so you should use \verb"\newblock" to split different categories in the order of author, title, location and notes.
+%    \begin{macrocode}
+\newcommand{\onlineitem}{%
+  \item[{\setbeamertemplate{bibliography item}[online]\usebeamertemplate{bibliography item}}]%
+  \def\newblock{\beamer@newblock}\newblock%
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+% \subsubsection{Block Environments}
+%
+%   The block in \verb"min" theme is not rounded.
+%    \begin{macrocode}
+%<*min>
+\if\EqualOption{inner}{cover}{min}\else
+%</min>
+  \setbeamertemplate{blocks}[rounded]
+%<*min>
+\fi
+%</min>
+%    \end{macrocode}
+%
+% \begin{macro}{\highlight}
+%   Highlight the given text. Create a \verb"structure" color background block with white text.
+%   Receives one optional paramenter to specify the background color. If you want to modify the color of the text, use \verb"\color{}" command or \verb"\textcolor{}{}" command for your text.
+%   For a general use and better control, use \verb"\colorbox{}{}" from \verb"xcolor" directly.
+%   Overlay option can be specified as well.
+%    \begin{macrocode}
+\newcommand<>{\highlight}[2][structure]{\only#3{\textcolor{white}{\colorbox{#1}{#2}}}}
+%    \end{macrocode}
+%   Since \verb"structure" is globally available, we can use it to set the background color without introducing first.
+%   We decided to use a dark background rather than the traditional light highlight marker like color, since the former one is better for presentation highlighting and the later one is more like the overlay effect in \verb"beamer".
+% \end{macro}
+%
+% \begin{macro}{\paragraph}
+%   Making a new paragraph through dark background color and white forground, which confirms the visual identity system on making use of vi shapes.
+%   Since beamer has deleted \verb"\paragraph" macro in this class, this template defines a macro for that to indicate it is another point and more paragraph-like. It is useful for the migration from \verb"article" class.
+%   If it is the end of paragraph, the trailing space will be removed by \TeX{}. The additional newline after this command will be get an output rather than the original sectioning command.
+%    \begin{macrocode}
+\providecommand{\paragraph}[1]{\textcolor{white}{\colorbox{structure}{#1}}\space}
+%    \end{macrocode}
+%   NOTE: We could use the original \LaTeX{} macro \verb"\@startsection" on \verb"\paragraph" to make it more like a sectioning command. Though we could get benefit from removing all the trailing newline after this command, the caveats are obvious.
+%   Like a sectioning command, it will goes to the auxilary file \verb".toc". Since the \verb"beamer" class has a different mechanism on treating Table of Contents, the output contents for paragraph will be inconsistent. It is afraid that not only extra burden on processing will be made, but also unexpected behavior for beamer in \verb"\tableofcontents" will occur.
+%   And a sectioning command cannot go anywhere, especially in an environment like \verb"center" and \verb"itemize" lists. The best practice for \LaTeX{} is not using \verb"\paragraph" and \verb"\subparagraph". As mentioned, The macro here is mainly for migration compatibility to create a similar output. You could use \verb"\alert" or \verb"\highlight" (a more general one, \verb"\colorbox") for highlighting the text.
+% \end{macro}
+%
+% \begin{macro}{stampbox}
+%   Make a stampbox border, which is a decoration advice from SJTU VI. It has the dependency on \verb"stampline" from \verb"sjtuvi" package.
+%    \begin{macrocode}
+\newtcolorbox{stampbox}[1][cprimary]{%
+  capture=hbox,
+  enhanced,
+  frame empty,
+  interior empty,
+  sharp corners,
+  top=2pt,bottom=2pt,left=2pt,right=2pt,
+  borderline={4pt}{0pt}{
+    #1,
+    line width=0.5pt,
+    decoration={
+      stampline,
+      segment length=8pt,
+      path has corners=true,
+    },
+    decorate
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%   Declare the basic listings highlighter. \verb"columns" is set to \verb"flexible" to avoid ugly grid alignment. \verb"breaklines" is set to enable line wrapping.
+%    \begin{macrocode}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{cprimary},%
+  stringstyle=\color{csecondary},%
+  commentstyle=\color{ctertiary!80!gray},%
+  columns=flexible,
+  extendedchars=false,
+  showstringspaces=false,
+  showspaces=false,
+  breaklines
+}
+%    \end{macrocode}
+%
+% \begin{macro}{codeblock}
+%   Code block environment is made for presenting code in an obvious way.
+%   The first optional parameter is passed to listing, which mostly sets the language to highlight, see the \verb"listings" package for more details. 
+%   The second required parameter receives the title to make.
+%   ADVANCED TIP: For longer typeset, use \verb"lstlisting" environment directly and remove the \verb"frame" environment around the code input for occupying cross the pages. No numbering is preset so you need to set the number manually for this basic command.
+%    \begin{macrocode}
+\newtcblisting{codeblock}[2][]{
+  listing only,
+  listing engine=listings,
+  listing options={
+    numbers=left,
+    numberstyle=\color{cprimary!80}\ttfamily\scriptsize,
+    numbersep=5pt,
+    aboveskip=0pt,
+    belowskip=0pt,
+    #1,
+  },
+  enhanced,
+  sharp corners,
+  top=0mm,
+  bottom=0mm,
+  right*=0.5mm,
+  title=#2,
+  colback=cprimary!5,
+  colframe=cprimary!80,
+  overlay={
+    \begin{tcbclipinterior}\fill[cprimary!20]%
+      (frame.south west) rectangle ([xshift=5.5mm]frame.north west);
+    \end{tcbclipinterior}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\highlightline}
+%    Highlight the current line with a light background. 
+%    It is useful for the codeblock environment with \verb"escapechar" option to insert the command for highlighting. For example, set the optional argument \verb"escapechar=|", and insert \verb"|\highlightline|" at the first position in the line you want to highlight.
+%    You could use overlay specification for this macro.
+%    \begin{macrocode}
+\newcommand<>{\highlightline}{\only#1{\rlap{\color{structure!25}\rule[-\dp\strutbox]{\linewidth}{\baselineskip}}}}
+%    \end{macrocode}
+%    For better support in code environment, you should try out the \verb"highlightlines" in minted package, but performance drop is expected.
+% \end{macro}
+%
+% \begin{macro}{\codeblockinput}
+%   Code block environment for external file input. The same style like \verb"codeblock".
+%   The first optional parameter is passed to listing.
+%   The second required parameter receives the title to make.
+%   The third required paramter receives the file to typeset.
+%   ADVANCED TIP: For longer typeset, use \verb"lstinputlisting" command directly and remove the \verb"frame" environment around the code input for occupying cross the pages. No numbering is preset so you need to set the number manually for this basic command.
+%    \begin{macrocode}
+\newtcbinputlisting{\codeblockinput}[3][]{
+  listing only,
+  listing engine=listings,
+  listing options={
+    numbers=left,
+    numberstyle=\color{cprimary!80}\ttfamily\scriptsize,
+    numbersep=5pt,
+    aboveskip=0pt,
+    belowskip=0pt,
+    #1,
+  },
+  listing file=#3,
+  enhanced,
+  sharp corners,
+  top=0mm,
+  bottom=0mm,
+  right*=0.5mm,
+  title=#2,
+  colback=cprimary!5,
+  colframe=cprimary!80,
+  overlay={
+    \begin{tcbclipinterior}\fill[cprimary!20]%
+      (frame.south west) rectangle ([xshift=5.5mm]frame.north west);
+    \end{tcbclipinterior}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%   Extra Support for pgfplots and pgfplotstable (if loaded in the main file).
+%    \begin{macrocode}
+\AtEndPreamble{%
+%    \end{macrocode}
+%   Set the default visual theme for \textsc{Pgfplots}. The cycle list is set to the current color theme. And lines on the graph is optimized to make it clear for presentation. The predefinition on the height is made to avoid the overfullbox on the vertical side.
+%    \begin{macrocode}
+  \@ifpackageloaded{pgfplots}{%
+    \pgfplotsset{
+      compat=newest,
+      every axis/.style={
+        font=\small\sffamily,
+        cycle multi list={
+            mark options={thick}\nextlist
+            mark list\nextlist
+            cprimary,csecondary,ctertiary\nextlist
+          },
+        height=0.5*\the\paperheight,
+        axis line style={
+            cprimary,
+            thin
+          },
+        every tick label/.style={
+            cprimary,
+            font=\small,
+            /pgf/number format/assume math mode=true
+          },
+        grid style={cprimary!10},
+        tick style={cprimary!50},
+        minor tick style={cprimary!30},
+        xlabel style={cprimary},
+        ylabel style={cprimary},
+        zlabel style={cprimary},
+        legend style={
+            draw={cprimary},
+            thin,
+            nodes={cprimary}
+          },
+        thick,
+      },
+    }
+  }{}
+%    \end{macrocode}
+%   Set the style of \textsc{Pgfplotstable}. The \verb"\colorrows" macro here is used for making the header colored. The \verb"booktabs" line is used to create a professional look.
+%    \begin{macrocode}
+  \@ifpackageloaded{pgfplotstable}{%
+    \RequirePackage{array}
+    \RequirePackage{colortbl}
+    \RequirePackage{booktabs}
+%    \end{macrocode}
+%   Two macros are defined to make the header colored.
+%    \begin{macrocode}
+    \def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+    \def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+%    \end{macrocode}
+%    \begin{macrocode}
+    \pgfplotstableset{
+      col sep=comma,
+      every table/.style={
+        font={\small\sffamily},
+      },
+      every head row/.style={
+        before row={
+          \arrayrulecolor{cprimary}
+          \toprule
+          \colorrows{\color{cprimary}}
+        },
+        after row={
+            \midrule
+            \colorrows{\color{black}}
+          },
+        },
+      every last row/.style={
+        after row=\bottomrule
+      },
+    }
+    \newcolumntype{L}[1]{>{\begin{pgfplotstablecoltype}[#1]}
+            r<{\end{pgfplotstablecoltype}}}
+  }{}
+%    \end{macrocode}
+% Disable the warning from \verb"hyperref" which conflicts the setting in C\TeX{} or CJK. It has to be manually disabled.
+%    \begin{macrocode}
+  \def\Hy@WarnOptionDisabled#1{
+    \def\next{#1}%
+    \ifx\next pdfauthor %
+      \ifx\next driverfallback %
+      \else
+        \Hy@Warning{%
+          Option `#1' has already been used,\MessageBreak
+          setting the option has no effect%
+        }
+      \fi%
+    \fi%
+  }
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
